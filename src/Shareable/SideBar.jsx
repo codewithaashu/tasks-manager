@@ -14,7 +14,7 @@ const SideBar = () => {
   const path = useHref();
   return (
     <>
-      <div className="min-h-screen flex flex-col w-60 p-2 px-3 border-r rounded-md shadow-sm">
+      <div className="min-h-screen flex flex-col w-56 p-2 px-3 border-r rounded-md shadow-sm fixed top-0 left-0 bg-background">
         {/* logo */}
         <div className="h-14 border-b-[1px] border-muted flex items-center">
           <img
@@ -27,7 +27,7 @@ const SideBar = () => {
           <Link
             className={`flex gap-2  text-[15px] cursor-pointer hover:text-card-foreground text-muted-foreground   items-center p-2 px-3  rounded-full ${
               path.includes("/dashboard")
-                ? "bg-primary text-white "
+                ? "bg-primary text-white hover:text-white "
                 : "bg-background"
             }`}
             to="/dashboard"
@@ -38,7 +38,7 @@ const SideBar = () => {
           <Link
             className={`flex gap-2  text-[15px] cursor-pointer hover:text-card-foreground text-muted-foreground   items-center p-2 px-3  rounded-full ${
               path.includes("/tasks")
-                ? "bg-primary text-white "
+                ? "bg-primary text-white hover:text-white"
                 : "bg-background"
             }`}
             to="/tasks"
@@ -49,7 +49,7 @@ const SideBar = () => {
           <Link
             className={`flex gap-2  text-[15px] cursor-pointer hover:text-card-foreground text-muted-foreground   items-center p-2 px-3  rounded-full ${
               path.includes("/todo")
-                ? "bg-primary text-white "
+                ? "bg-primary text-white hover:text-white"
                 : "bg-background"
             }`}
             to="/todo"
@@ -60,7 +60,7 @@ const SideBar = () => {
           <Link
             className={`flex gap-2  text-[15px] cursor-pointer hover:text-card-foreground text-muted-foreground   items-center p-2 px-3  rounded-full ${
               path.includes("/in-progress")
-                ? "bg-primary text-white "
+                ? "bg-primary text-white hover:text-white"
                 : "bg-background"
             }`}
             to="/in-progress"
@@ -71,7 +71,7 @@ const SideBar = () => {
           <Link
             className={`flex gap-2  text-[15px] cursor-pointer hover:text-card-foreground text-muted-foreground   items-center p-2 px-3  rounded-full ${
               path.includes("/completed")
-                ? "bg-primary text-white "
+                ? "bg-primary text-white hover:text-white "
                 : "bg-background"
             }`}
             to="/completed"
@@ -82,7 +82,7 @@ const SideBar = () => {
           <Link
             className={`flex gap-2  text-[15px] cursor-pointer hover:text-card-foreground text-muted-foreground   items-center p-2 px-3  rounded-full ${
               path.includes("/trash")
-                ? "bg-primary text-white "
+                ? "bg-primary text-white hover:text-white"
                 : "bg-background"
             }`}
             to="/trash"
@@ -93,7 +93,7 @@ const SideBar = () => {
           <Link
             className={`flex gap-2  text-[15px] cursor-pointer hover:text-card-foreground text-muted-foreground   items-center p-2 px-3  rounded-full ${
               path.includes("/team")
-                ? "bg-primary text-white "
+                ? "bg-primary text-white hover:text-white"
                 : "bg-background"
             }`}
             to="/team"

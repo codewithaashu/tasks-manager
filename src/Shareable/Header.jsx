@@ -1,4 +1,11 @@
-import { Bell, Moon, Sun } from "lucide-react";
+import {
+  Bell,
+  CircleUserRound,
+  LogOut,
+  Moon,
+  Sun,
+  UserRoundCog,
+} from "lucide-react";
 import React from "react";
 import {
   Popover,
@@ -33,8 +40,23 @@ const Header = () => {
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </PopoverTrigger>
-            <PopoverContent className="w-80">
-              <h1>hello</h1>
+            <PopoverContent
+              side="bottom"
+              align="end"
+              className="w-48 flex flex-col gap-1"
+            >
+              <div className="flex gap-1.5 items-center cursor-pointer hover:bg-primary hover:text-white p-1.5 rounded-md">
+                <CircleUserRound className="w-4 h-4" />
+                <p className="text-sm font-semibold">Profile</p>
+              </div>
+              <div className="flex gap-1.5 items-center cursor-pointer hover:bg-primary hover:text-white p-1.5 rounded-md">
+                <UserRoundCog className="w-4 h-4" />
+                <p className="text-sm font-semibold">Change Password</p>
+              </div>
+              <div className="flex gap-1.5 items-center text-red-600 cursor-pointer hover:bg-primary hover:text-white p-1.5 rounded-md">
+                <LogOut className="w-4 h-4" />
+                <p className="text-sm font-semibold">Logout</p>
+              </div>
             </PopoverContent>
           </Popover>
         </div>

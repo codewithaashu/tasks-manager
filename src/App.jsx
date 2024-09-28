@@ -18,9 +18,9 @@ const App = () => {
     <>
       <div className="w-full min-h-screen flex">
         <SideBar />
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full ml-56">
           <Header />
-          <div className="bg-muted flex-1">
+          <div className="bg-muted flex-1 ">
             <Outlet />
           </div>
         </div>
