@@ -4,7 +4,6 @@ import App from "./App.jsx";
 import "./index.css";
 import { ThemeProvider } from "./components/theme-provider.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "./Pages/Home.jsx";
 import Login from "./Pages/Login.jsx";
 import Dashboard from "./Pages/Dashboard.jsx";
 import Tasks from "./Pages/Tasks.jsx";
@@ -14,16 +13,13 @@ import Completed from "./Pages/Completed.jsx";
 import Trash from "./Pages/Trash.jsx";
 import Teams from "./Pages/Teams.jsx";
 import TaskDetails from "./Pages/TaskDetails.jsx";
+import { Toaster } from "sonner";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
-      {
-        path: "/home",
-        element: <Home />,
-      },
       {
         path: "/dashboard",
         element: <Dashboard />,
@@ -67,6 +63,7 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
       <RouterProvider router={router} />
+      <Toaster richColors position="bottom-right" duration={5000} />
     </ThemeProvider>
   </StrictMode>
 );

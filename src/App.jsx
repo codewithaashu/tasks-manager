@@ -7,12 +7,12 @@ import SideBar from "./Shareable/SideBar";
 const App = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    // const token = localStorage.getItem("access_token");
-    // if (token) {
-    //   navigate("/home");
-    // } else {
-    //   navigate("/login");
-    // }
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      navigate("/dashboard");
+    } else {
+      navigate("/login");
+    }
   }, []);
   return (
     <>

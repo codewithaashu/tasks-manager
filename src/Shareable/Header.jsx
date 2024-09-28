@@ -18,6 +18,7 @@ import ChangePasswordDialog from "@/components/ChangePasswordDialog";
 import ProfileDialog from "@/components/ProfileDialog";
 import NotificationCard from "@/components/NotificationCard";
 import { NotificationsList } from "@/db/NotificationsList";
+import { toast } from "sonner";
 
 const Header = () => {
   const { setTheme, theme } = useTheme();
@@ -27,7 +28,9 @@ const Header = () => {
   const user = {
     name: "John Doe",
   };
-  const handleLogout = () => {};
+  const handleLogout = () => {
+    toast.success("hello");
+  };
   return (
     <>
       <div className="w-full p-2 h-16 pr-8 border-b flex justify-end shadow-sm">
