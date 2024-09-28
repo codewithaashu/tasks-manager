@@ -13,6 +13,7 @@ import InProgress from "./Pages/InProgress.jsx";
 import Completed from "./Pages/Completed.jsx";
 import Trash from "./Pages/Trash.jsx";
 import Teams from "./Pages/Teams.jsx";
+import TaskDetails from "./Pages/TaskDetails.jsx";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: "/tasks",
         element: <Tasks />,
+      },
+      {
+        path: "/task/:id",
+        element: <TaskDetails />,
       },
       {
         path: "/todo",
