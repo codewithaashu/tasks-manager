@@ -6,12 +6,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ArchiveRestore, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 import { useState } from "react";
-import { getColorOnStage } from "@/utils/getColorOnStage";
-import { getPriority } from "@/utils/getPriority";
 import AddEditMemberDialog from "./AddEditMemberDialog";
 
 const TeamMemberColumns = [

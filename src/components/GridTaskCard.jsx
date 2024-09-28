@@ -24,6 +24,7 @@ import AlertDialogComponent from "./custom/AlertDialogComponent";
 import moment from "moment";
 import { getColorOnStage } from "@/utils/getColorOnStage";
 import { getPriority } from "@/utils/getPriority";
+import { useNavigate } from "react-router-dom";
 
 const GridTaskCard = ({ task }) => {
   const [openEditDialog, setOpenEditDialog] = useState(false);
@@ -32,7 +33,7 @@ const GridTaskCard = ({ task }) => {
   const [openRemoveAlert, setOpenRemoveAlert] = useState(false);
   const duplicateTask = () => {};
   const deleteTask = () => {};
-
+  const navigate = useNavigate();
   return (
     <>
       <div className="rounded-md shadow-md bg-background p-5 flex flex-col gap-2">
@@ -47,7 +48,7 @@ const GridTaskCard = ({ task }) => {
               align="end"
               className="w-52 flex flex-col gap-2"
             >
-              <div className="flex gap-2 items-center cursor-pointer hover:bg-primary hover:text-white p-2 rounded-md">
+              <div className="flex gap-2 items-center cursor-pointer hover:bg-primary hover:text-white p-2 rounded-md" onClick={()=>navigate("/task/123")}>
                 <FolderOpen className="w-4 h-4" />
                 <p className="text-sm font-medium">Open Task</p>
               </div>

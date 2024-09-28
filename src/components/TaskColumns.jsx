@@ -25,7 +25,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { getColorOnStage } from "@/utils/getColorOnStage";
 import { getPriority } from "@/utils/getPriority";
-
+import {useNavigate} from "react-router-dom"
 const TaskColumns = [
   {
     accessorKey: "title",
@@ -105,7 +105,7 @@ const TableActionBtns = ({ row }) => {
   const [openRemoveAlert, setOpenRemoveAlert] = useState(false);
   const duplicateTask = () => {};
   const deleteTask = () => {};
-
+  const navigate = useNavigate();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -118,7 +118,7 @@ const TableActionBtns = ({ row }) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem className="flex gap-1.5 items-center">
+        <DropdownMenuItem className="flex gap-1.5 items-center" onClick={()=>navigate("/task/123")}>
           <FolderOpen className="w-3 h-3" />
           <p className="text-[13px] font-medium">Open Task</p>
         </DropdownMenuItem>

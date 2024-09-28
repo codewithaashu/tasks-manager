@@ -9,21 +9,18 @@ import {
 } from "lucide-react";
 import React from "react";
 import { Link, useHref } from "react-router-dom";
-
+import logo from ".././assets/logo.svg";
 const SideBar = () => {
   const path = useHref();
   return (
     <>
-      <div className="min-h-screen flex flex-col w-56 p-2 px-3 border-r rounded-md shadow-sm fixed top-0 left-0 bg-background">
+      <div className="min-h-screen flex flex-col w-56 p-2 px-3 border-r rounded-md shadow-sm fixed top-0 left-0 bg-background ">
         {/* logo */}
         <div className="h-14 border-b-[1px] border-muted flex items-center">
-          <img
-            src="https://lnct-campus.vercel.app/assets/logo-QvsrVlYc.svg"
-            className="h-8"
-          />
+          <img src={logo} className="h-7" />
         </div>
         {/* Sidebar Elements */}
-        <div className="flex flex-col gap-3 py-3">
+        <div className="flex flex-col gap-3 py-4">
           <Link
             className={`flex gap-2  text-[15px] cursor-pointer hover:text-card-foreground text-muted-foreground   items-center p-2 px-3  rounded-full ${
               path.includes("/dashboard")
