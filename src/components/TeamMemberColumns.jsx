@@ -13,6 +13,8 @@ import { useState } from "react";
 import AddEditMemberDialog from "./AddEditMemberDialog";
 import { delete_TeamMember } from "@/utils/GlobalApi";
 import { bgColor } from "@/utils/bgColor";
+import { useDispatch } from "react-redux";
+import { refreshPage } from "@/redux/taskSlice";
 
 const TeamMemberColumns = [
   {
@@ -80,10 +82,12 @@ const TableActionBtns = ({ row }) => {
   const user = row?.original;
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [openRemoveAlert, setOpenRemoveAlert] = useState(false);
+  const dispatch = useDispatch();
   const deleteMember = async () => {
     const success = await delete_TeamMember(user.id);
     if (success) {
       setOpenRemoveAlert(false);
+      dispatch(refreshPage());
     }
   };
 

@@ -2,13 +2,15 @@ import Loading from "@/components/custom/Loading";
 import NavigationView from "@/components/NavigationView";
 import { getTaskByStage } from "@/utils/GlobalApi";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const InProgress = () => {
   const [tasks, setTasks] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { refresh } = useSelector((state) => state.task);
   useEffect(() => {
     getUserTasks();
-  }, []);
+  }, [refresh]);
   const getUserTasks = async () => {
     setLoading(true);
     const response = await getTaskByStage("in_progress");

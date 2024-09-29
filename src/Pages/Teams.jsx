@@ -6,14 +6,16 @@ import { Button } from "@/components/ui/button";
 import { getTeamMembers } from "@/utils/GlobalApi";
 import { Plus } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const Teams = () => {
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [teams, setTeams] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { refresh } = useSelector((state) => state.task);
   useEffect(() => {
     getTeams();
-  }, []);
+  }, [refresh]);
   const getTeams = async () => {
     setLoading(true);
     const response = await getTeamMembers();

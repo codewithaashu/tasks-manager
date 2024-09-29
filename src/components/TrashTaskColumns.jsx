@@ -13,6 +13,8 @@ import { useState } from "react";
 import { getColorOnStage } from "@/utils/getColorOnStage";
 import { getPriority } from "@/utils/getPriority";
 import { delete_Task, restore_Task } from "@/utils/GlobalApi";
+import { useDispatch } from "react-redux";
+import { refreshPage } from "@/redux/taskSlice";
 
 const TrashTaskColumns = [
   {
@@ -56,16 +58,19 @@ const TableActionBtns = ({ row }) => {
   const task = row?.original;
   const [openRestoreAlert, setOpenRestoreAlert] = useState(false);
   const [openRemoveAlert, setOpenRemoveAlert] = useState(false);
+  const dispatch = useDispatch();
   const restoreTask = async () => {
     const success = await restore_Task(task.id);
     if (success) {
       setOpenRestoreAlert(false);
+      dispatch(refreshPage());
     }
   };
   const deleteTask = async () => {
     const success = await delete_Task(task.id);
     if (success) {
       setOpenRemoveAlert(false);
+      dispatch(refreshPage());
     }
   };
 

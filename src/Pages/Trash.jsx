@@ -3,30 +3,36 @@ import CustomTable from "@/components/custom/CustomTable";
 import Loading from "@/components/custom/Loading";
 import TrashTaskColumns from "@/components/TrashTaskColumns";
 import { Button } from "@/components/ui/button";
+import { refreshPage } from "@/redux/taskSlice";
 import { delete_Tasks, getTrashTasks, restore_Tasks } from "@/utils/GlobalApi";
 import { ArchiveRestore, Trash2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const Trash = () => {
   const [openRestoreAlert, setOpenRestoreAlert] = useState(false);
   const [openRemoveAlert, setOpenRemoveAlert] = useState(false);
   const [taskList, setTaskList] = useState(null);
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const { refresh } = useSelector((state) => state.task);
   const restoreTask = async () => {
     const success = await restore_Tasks();
     if (success) {
       setOpenRestoreAlert(false);
+      dispatch(refreshPage());
     }
   };
   const deleteTask = async () => {
     const success = await delete_Tasks();
     if (success) {
       setOpenRemoveAlert(false);
+      dispatch(refreshPage());
     }
   };
   useEffect(() => {
     getTask();
-  }, []);
+  }, [refresh]);
   const getTask = async () => {
     setLoading(true);
     const response = await getTrashTasks();

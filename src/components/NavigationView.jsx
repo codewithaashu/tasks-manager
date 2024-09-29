@@ -6,7 +6,7 @@ import ListTaskCard from "./ListTaskCard";
 import SelectComponent from "./custom/SelectComponent";
 import { TaskFilterCriteria } from "@/db/TaskFilterCriteria";
 
-const NavigationView = ({ items }) => {
+const NavigationView = ({ items, hiddenFilter = true }) => {
   const [value, setValue] = useState("");
   const filterItems = useMemo(() => {
     const filterData = items?.filter((curr) => {
@@ -34,11 +34,13 @@ const NavigationView = ({ items }) => {
               <p>List View</p>
             </TabsTrigger>
           </TabsList>
-          <SelectComponent
-            placeholder={"Filter By"}
-            items={TaskFilterCriteria}
-            setValue={setValue}
-          />
+          {!hiddenFilter && (
+            <SelectComponent
+              placeholder={"Filter By"}
+              items={TaskFilterCriteria}
+              setValue={setValue}
+            />
+          )}
         </div>
         <TabsContent
           value="grid"

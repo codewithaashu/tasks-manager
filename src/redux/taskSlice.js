@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   task: null,
+  refresh: false,
 };
 const taskSlice = createSlice({
   name: "tasks",
@@ -9,7 +10,10 @@ const taskSlice = createSlice({
     setTask(state, action) {
       state.task = action.payload;
     },
+    refreshPage(state) {
+      state.refresh = !state.refresh;
+    },
   },
 });
-export const { setTask } = taskSlice.actions;
+export const { setTask, refreshPage } = taskSlice.actions;
 export default taskSlice.reducer;

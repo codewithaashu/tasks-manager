@@ -13,8 +13,11 @@ import SelectLabelComponent from "./custom/SelectLabelComponent";
 import { Separator } from "./ui/separator";
 import { Role } from "@/db/Role";
 import { addTeamMember, update_TeamMember } from "@/utils/GlobalApi";
+import { useDispatch } from "react-redux";
+import { refreshPage } from "@/redux/taskSlice";
 
 const AddEditMemberDialog = ({ open, setOpen, type, form = null }) => {
+  const dispatch = useDispatch();
   const [memberForm, setMemberForm] = useState(
     !form
       ? {
@@ -31,12 +34,14 @@ const AddEditMemberDialog = ({ open, setOpen, type, form = null }) => {
       const success = await update_TeamMember(form.id, memberForm);
       if (success) {
         setOpen(false);
+        dispatch(refreshPage());
       }
     } else {
       // Add new member
       const success = await addTeamMember(memberForm);
       if (success) {
         setOpen(false);
+        dispatch(refreshPage());
       }
     }
   };

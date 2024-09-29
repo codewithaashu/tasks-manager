@@ -5,14 +5,16 @@ import { Button } from "@/components/ui/button";
 import { getAllTasks } from "@/utils/GlobalApi";
 import { Plus } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const Tasks = () => {
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [tasks, setTasks] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { refresh } = useSelector((state) => state.task);
   useEffect(() => {
     getUserTasks();
-  }, []);
+  }, [refresh]);
   const getUserTasks = async () => {
     setLoading(true);
     const response = await getAllTasks();
@@ -32,7 +34,7 @@ const Tasks = () => {
               <Plus className="w-4 h-4" /> Create Task
             </Button>
           </div>
-          <NavigationView items={tasks} />
+          <NavigationView items={tasks} hiddenFilter={false} />
         </div>
       ) : (
         <div className="py-5">

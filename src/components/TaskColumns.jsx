@@ -27,6 +27,8 @@ import { getColorOnStage } from "@/utils/getColorOnStage";
 import { getPriority } from "@/utils/getPriority";
 import { useNavigate } from "react-router-dom";
 import { duplicateTasks, trashedTask } from "@/utils/GlobalApi";
+import { useDispatch } from "react-redux";
+import { refreshPage } from "@/redux/taskSlice";
 const TaskColumns = [
   {
     accessorKey: "title",
@@ -105,16 +107,19 @@ const TableActionBtns = ({ row }) => {
   const [openAddSubTaskDialog, setOpenAddSubTaskDialog] = useState(false);
   const [openDuplicateAlert, setOpenDuplicateAlert] = useState(false);
   const [openRemoveAlert, setOpenRemoveAlert] = useState(false);
+  const dispatch = useDispatch();
   const duplicateTask = async () => {
     const success = await duplicateTasks(task?.id);
     if (success) {
       setOpenDuplicateAlert(false);
+      dispatch(refreshPage());
     }
   };
   const deleteTask = async () => {
     const success = await trashedTask(task?.id);
     if (success) {
       setOpenRemoveAlert(false);
+      dispatch(refreshPage());
     }
   };
   const navigate = useNavigate();

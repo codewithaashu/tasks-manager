@@ -11,6 +11,8 @@ import InputComponent from "./custom/InputComponent";
 import DateLabelComponent from "./custom/DateLabelComponent";
 import { Button } from "./ui/button";
 import { createSubTask } from "@/utils/GlobalApi";
+import { useDispatch } from "react-redux";
+import { refreshPage } from "@/redux/taskSlice";
 
 const AddSubTaskDialog = ({ open, setOpen, id }) => {
   const [addSubTaskForm, setAddSubTaskForm] = useState({
@@ -18,11 +20,13 @@ const AddSubTaskDialog = ({ open, setOpen, id }) => {
     date: "",
     tag: "",
   });
+  const dispatch = useDispatch();
   const handleSave = async () => {
     const success = await createSubTask(id, addSubTaskForm);
     if (success) {
       setOpen(false);
     }
+    dispatch(refreshPage());
   };
   return (
     <Dialog open={open}>

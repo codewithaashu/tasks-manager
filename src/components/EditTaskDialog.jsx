@@ -18,8 +18,11 @@ import MultipleSelectComponent from "./custom/MultipleSelectComponent";
 import { TaskPriority } from "@/db/TaskPriority";
 import { createTask, editTask, getTeamMembers } from "@/utils/GlobalApi";
 import { toast } from "sonner";
+import { useDispatch } from "react-redux";
+import { refreshPage } from "@/redux/taskSlice";
 
 const EditTaskDialog = ({ open, setOpen, type, form = null }) => {
+  const dispatch = useDispatch();
   const [teamMember, setTeamMember] = useState(null);
   const [editTaskForm, setEditTaskForm] = useState(
     !form
@@ -54,11 +57,13 @@ const EditTaskDialog = ({ open, setOpen, type, form = null }) => {
       const success = await editTask(form?.id, editTaskForm);
       if (success) {
         setOpen(false);
+        dispatch(refreshPage());
       }
     } else {
       const success = await createTask(editTaskForm);
       if (success) {
         setOpen(false);
+        dispatch(refreshPage());
       }
     }
   };
