@@ -5,10 +5,13 @@ import {
   DialogContent,
   DialogDescription,
   DialogFooter,
+  DialogTitle,
 } from "./ui/dialog";
 import { Button } from "./ui/button";
+import { markNotificationAsRead } from "@/utils/GlobalApi";
+import { useDispatch, useSelector } from "react-redux";
 
-const NotificationCard = ({ date, notification, index, length }) => {
+const NotificationCard = ({ date, notification, index, length, id }) => {
   const [open, setOpen] = useState(false);
   return (
     <>
@@ -34,16 +37,26 @@ const NotificationCard = ({ date, notification, index, length }) => {
         open={open}
         setOpen={setOpen}
         notification={notification}
+        id={id}
       />
     </>
   );
 };
 
-const NotificationDialog = ({ open, setOpen, notification }) => {
-  const handleMarkRead = () => {};
+const NotificationDialog = ({ open, setOpen, notification, id }) => {
+  const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const handleMarkRead = async () => {
+    const success = await markNotificationAsRead(user.id, id);
+    if (success) {
+      setOpen(false);
+      dispatch(refreshPage());
+    }
+  };
   return (
     <Dialog open={open}>
       <DialogContent>
+        <DialogTitle />
         <DialogDescription />
         <div className="text-sm">{notification}</div>
         <DialogFooter className="flex justify-between w-full sm:justify-between mt-2">

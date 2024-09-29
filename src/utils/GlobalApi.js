@@ -21,12 +21,12 @@ export const login = async (postData) => {
       toast.success(data.message);
       localStorage.setItem("access_token", data.data);
     } else {
-      toast.error(data.message);
+      toast.error(data.error);
     }
     return data.status;
   } catch (err) {
     if (err.response) {
-      toast.error(err.response.data.message);
+      toast.error(err.response.data.errors);
     } else {
       toast.error(err.message ?? "Server Error!");
     }
@@ -451,6 +451,72 @@ export const delete_TeamMember = async (id) => {
     const { data: response } = await AxiosInstance.delete(`/user/${id}`);
     if (response.status) {
       toast.success("Team member deleted successfully");
+      return true;
+    } else {
+      toast.error(response.message);
+      return false;
+    }
+  } catch (err) {
+    if (err.response) {
+      toast.error(err.response.data.message);
+    } else {
+      toast.error(err.message ?? "Server Error!");
+    }
+    return false;
+  }
+};
+
+//!Notifications
+
+//get notifications
+export const getNotifications = async () => {
+  try {
+    const { data } = await AxiosInstance.get("/notification");
+    if (data.status) {
+      return data.data;
+    } else {
+      toast.error(data.message);
+      return null;
+    }
+  } catch (err) {
+    if (err.response) {
+      toast.error(err.response.data.message);
+    } else {
+      toast.error(err.message ?? "Server Error!");
+    }
+    return null;
+  }
+};
+
+//mark notification as read
+export const markNotificationAsRead = async (userId, id) => {
+  try {
+    const { data: response } = await AxiosInstance.patch(
+      `/notification/${userId}/${id}`
+    );
+    if (response.status) {
+      toast.success("Notification marked as read");
+      return true;
+    } else {
+      toast.error(response.message);
+      return false;
+    }
+  } catch (err) {
+    if (err.response) {
+      toast.error(err.response.data.message);
+    } else {
+      toast.error(err.message ?? "Server Error!");
+    }
+    return false;
+  }
+};
+
+//mark all notifications as read
+export const markNotificationsAsRead = async (id) => {
+  try {
+    const { data: response } = await AxiosInstance.patch(`/notification`);
+    if (response.status) {
+      toast.success("All notifications marked as read");
       return true;
     } else {
       toast.error(response.message);

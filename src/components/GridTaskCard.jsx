@@ -140,7 +140,9 @@ const GridTaskCard = ({ task }) => {
         </div>
         <div className="flex flex-col gap-3 py-3">
           <div className="text-[15px] text-muted-foreground font-medium">
-            No Sub Task
+            {task?.subTasks?.length === 0
+              ? "No Sub Task"
+              : `${task?.subTasks?.length} subtasks are added`}
           </div>
           <Button
             variant="outline"
