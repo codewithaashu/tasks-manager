@@ -1,5 +1,10 @@
-import React, { useState } from "react";
-import { Dialog, DialogContent, DialogFooter } from "./ui/dialog";
+import React, { useEffect, useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+} from "./ui/dialog";
 import { Button } from "./ui/button";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import InputComponent from "./custom/InputComponent";
@@ -11,9 +16,11 @@ import { Separator } from "./ui/separator";
 import ImageInputComponent from "./custom/ImageInputComponent";
 import MultipleSelectComponent from "./custom/MultipleSelectComponent";
 import { TaskPriority } from "@/db/TaskPriority";
-import { Teams } from "@/db/Teams";
+import { createTask, editTask, getTeamMembers } from "@/utils/GlobalApi";
+import { toast } from "sonner";
 
 const EditTaskDialog = ({ open, setOpen, type, form = null }) => {
+  const [teamMember, setTeamMember] = useState(null);
   const [editTaskForm, setEditTaskForm] = useState(
     !form
       ? {
@@ -22,15 +29,44 @@ const EditTaskDialog = ({ open, setOpen, type, form = null }) => {
           stage: "",
           priority: "",
           date: "",
-          assets: "",
+          // assets: "",
         }
       : form
   );
-  const handleSave = () => {};
+  useEffect(() => {
+    getTeamMember();
+  }, []);
+  const getTeamMember = async () => {
+    setTeamMember(await getTeamMembers());
+  };
+  const handleSave = async () => {
+    if (
+      !editTaskForm.title ||
+      !editTaskForm.stage ||
+      !editTaskForm.priority ||
+      !editTaskForm.date ||
+      editTaskForm.team.length === 0
+    ) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+    if (type === "Edit") {
+      const success = await editTask(form?.id, editTaskForm);
+      if (success) {
+        setOpen(false);
+      }
+    } else {
+      const success = await createTask(editTaskForm);
+      if (success) {
+        setOpen(false);
+      }
+    }
+  };
   return (
     <Dialog open={open}>
       <DialogContent>
         <DialogTitle className="text-lg font-semibold">{type} Task</DialogTitle>
+        <DialogDescription />
         <Separator className="-my-2" />
         <div className="flex flex-col w-full gap-4">
           <InputComponent
@@ -80,7 +116,7 @@ const EditTaskDialog = ({ open, setOpen, type, form = null }) => {
             field={"team"}
             form={editTaskForm}
             setForm={setEditTaskForm}
-            items={Teams}
+            items={teamMember}
             label={"Assign Task To "}
             placeholder={"Select user(s)"}
           />

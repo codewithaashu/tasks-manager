@@ -1,6 +1,11 @@
 import moment from "moment";
 import React, { useState } from "react";
-import { Dialog, DialogContent, DialogFooter } from "./ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+} from "./ui/dialog";
 import { Button } from "./ui/button";
 
 const NotificationCard = ({ date, notification, index, length }) => {
@@ -39,6 +44,7 @@ const NotificationDialog = ({ open, setOpen, notification }) => {
   return (
     <Dialog open={open}>
       <DialogContent>
+        <DialogDescription />
         <div className="text-sm">{notification}</div>
         <DialogFooter className="flex justify-between w-full sm:justify-between mt-2">
           <Button variant="outline" size="sm" onClick={() => setOpen(false)}>

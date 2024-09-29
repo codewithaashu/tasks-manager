@@ -12,22 +12,20 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useTheme } from "@/components/theme-provider";
 import ChangePasswordDialog from "@/components/ChangePasswordDialog";
 import ProfileDialog from "@/components/ProfileDialog";
 import NotificationCard from "@/components/NotificationCard";
 import { NotificationsList } from "@/db/NotificationsList";
 import { toast } from "sonner";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const { setTheme, theme } = useTheme();
   const [openChangePasswordDialog, setOpenChangePasswordDialog] =
     useState(false);
   const [openUpdateProfileDialog, setOpenUpdateProfileDialog] = useState(false);
-  const user = {
-    name: "John Doe",
-  };
+  const { user } = useSelector((state) => state.user);
   const handleLogout = () => {
     toast.success("hello");
   };
@@ -120,10 +118,12 @@ const Header = () => {
         open={openChangePasswordDialog}
         setOpen={setOpenChangePasswordDialog}
       />
-      <ProfileDialog
-        open={openUpdateProfileDialog}
-        setOpen={setOpenUpdateProfileDialog}
-      />
+      {user && (
+        <ProfileDialog
+          open={openUpdateProfileDialog}
+          setOpen={setOpenUpdateProfileDialog}
+        />
+      )}
     </>
   );
 };

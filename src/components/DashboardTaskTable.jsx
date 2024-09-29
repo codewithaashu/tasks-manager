@@ -1,21 +1,48 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CustomTable from "./custom/CustomTable";
-import { TaskList } from "@/db/TaskList";
 import { getColorOnStage } from "@/utils/getColorOnStage";
 import { getPriority } from "@/utils/getPriority";
 import TeamUserCard from "./TeamUserCard";
 import moment from "moment";
+import Loading from "./custom/Loading";
+import { getAllTasks } from "@/utils/GlobalApi";
 
 const DashboardTaskTable = () => {
+  const [loading, setLoading] = useState(false);
+  const [tasks, setTasks] = useState(null);
+  useEffect(() => {
+    getTask();
+  }, []);
+
+  const getTask = async () => {
+    setLoading(true);
+    const response = await getAllTasks();
+    setTasks(response);
+    setLoading(false);
+  };
+
   return (
     <>
-      <div className="col-span-2">
-        <CustomTable
-          data={TaskList.slice(0, 8)}
-          columns={TaskColumns}
-          type={"dashboard"}
-        />
-      </div>
+      {!loading ? (
+        <div className="col-span-2">
+          {tasks && (
+            <CustomTable
+              data={tasks.slice(0, 8)}
+              columns={TaskColumns}
+              type={"dashboard"}
+            />
+          )}
+          {tasks?.length === 0 && (
+            <div className="text-sm text-muted-foreground">
+              No tasks in your project
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="py-5">
+          <Loading />
+        </div>
+      )}
     </>
   );
 };

@@ -2,7 +2,10 @@ import InputComponent from "@/components/custom/InputComponent";
 import Loading from "@/components/custom/Loading";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { login } from "@/utils/GlobalApi";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -10,6 +13,24 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const navigate = useNavigate();
+  const handleLogin = async () => {
+    if (!loginForm.email || !loginForm.password) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+    setLoading(true);
+    // Call API to login
+    const success = await login(loginForm);
+    if (success) {
+      setLoginForm({
+        email: "",
+        password: "",
+      });
+      navigate("/dashboard");
+    }
+    setLoading(false);
+  };
   return (
     <>
       <div className="w-full min-h-screen flex items-center justify-center flex-col lg:flex-row bg-muted">
@@ -66,7 +87,12 @@ const Login = () => {
                     Forget Password?
                   </span>
 
-                  <Button className="w-full h-10  rounded-full">Login</Button>
+                  <Button
+                    className="w-full h-10  rounded-full"
+                    onClick={handleLogin}
+                  >
+                    Login
+                  </Button>
                 </div>
               </Card>
             </div>

@@ -25,14 +25,25 @@ import moment from "moment";
 import { getColorOnStage } from "@/utils/getColorOnStage";
 import { getPriority } from "@/utils/getPriority";
 import { useNavigate } from "react-router-dom";
+import { duplicateTasks, trashedTask } from "@/utils/GlobalApi";
 
 const GridTaskCard = ({ task }) => {
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [openAddSubTaskDialog, setOpenAddSubTaskDialog] = useState(false);
   const [openDuplicateAlert, setOpenDuplicateAlert] = useState(false);
   const [openRemoveAlert, setOpenRemoveAlert] = useState(false);
-  const duplicateTask = () => {};
-  const deleteTask = () => {};
+  const duplicateTask = async () => {
+    const success = await duplicateTasks(task?.id);
+    if (success) {
+      setOpenDuplicateAlert(false);
+    }
+  };
+  const deleteTask = async () => {
+    const success = await trashedTask(task?.id);
+    if (success) {
+      setOpenRemoveAlert(false);
+    }
+  };
   const navigate = useNavigate();
   return (
     <>
@@ -48,7 +59,10 @@ const GridTaskCard = ({ task }) => {
               align="end"
               className="w-52 flex flex-col gap-2"
             >
-              <div className="flex gap-2 items-center cursor-pointer hover:bg-primary hover:text-white p-2 rounded-md" onClick={()=>navigate("/task/123")}>
+              <div
+                className="flex gap-2 items-center cursor-pointer hover:bg-primary hover:text-white p-2 rounded-md"
+                onClick={() => navigate(`/task/${task?.id}`)}
+              >
                 <FolderOpen className="w-4 h-4" />
                 <p className="text-sm font-medium">Open Task</p>
               </div>
@@ -100,16 +114,16 @@ const GridTaskCard = ({ task }) => {
           <div className="flex gap-4 items-center">
             <div className="flex gap-1.5 items-center text-muted-foreground">
               <GitCompareArrows className="w-4 h-4" />
-              <p className="text-sm ">{task?.subTasks}</p>
+              <p className="text-sm ">{task?.subTasks?.length ?? 0}</p>
             </div>
             <div className="flex gap-1.5 items-center text-muted-foreground">
               <Images className="w-4 h-4" />
-              <p className="text-sm ">{task?.assets}</p>
+              <p className="text-sm ">{task?.assets?.length ?? 0}</p>
             </div>
             <div className="flex gap-1.5 items-center text-muted-foreground">
               <ListTodo className="w-4 h-4" />
               <p className="text-sm ">
-                {task?.subTasks}/{task?.activities}
+                {task?.subTasks?.length ?? 0}/{task?.activities?.length ?? 0}
               </p>
             </div>
           </div>
@@ -142,6 +156,7 @@ const GridTaskCard = ({ task }) => {
       <AddSubTaskDialog
         open={openAddSubTaskDialog}
         setOpen={setOpenAddSubTaskDialog}
+        id={task?.id}
       />
       <AlertDialogComponent
         open={openDuplicateAlert}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Grid2x2, List } from "lucide-react";
 import GridTaskCard from "./GridTaskCard";
@@ -8,6 +8,12 @@ import { TaskFilterCriteria } from "@/db/TaskFilterCriteria";
 
 const NavigationView = ({ items }) => {
   const [value, setValue] = useState("");
+  const filterItems = useMemo(() => {
+    const filterData = items?.filter((curr) => {
+      return value === "" || value === "All" ? curr : curr.stage === value;
+    });
+    return filterData;
+  }, [value]);
   return (
     <>
       <Tabs defaultValue="grid" className="w-full mt-3">
@@ -38,12 +44,18 @@ const NavigationView = ({ items }) => {
           value="grid"
           className="my-5 grid grid-cols-3 gap-5 gap-y-7 w-full"
         >
-          {items?.map((curr, index) => {
-            return <GridTaskCard key={index} task={curr} />;
-          })}
+          {filterItems?.length === 0 ? (
+            <div className="text-base py-4 font-semibold text-muted-foreground">
+              No tasks found.
+            </div>
+          ) : (
+            filterItems?.map((curr, index) => {
+              return <GridTaskCard key={index} task={curr} />;
+            })
+          )}
         </TabsContent>
         <TabsContent value="list" className="my-5">
-          <ListTaskCard tasks={items} />
+          <ListTaskCard tasks={filterItems} />
         </TabsContent>
       </Tabs>
     </>

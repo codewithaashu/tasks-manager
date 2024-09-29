@@ -1,32 +1,52 @@
 import React, { useState } from "react";
-import { Dialog, DialogContent, DialogFooter } from "./ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+} from "./ui/dialog";
 import { Button } from "./ui/button";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import InputComponent from "./custom/InputComponent";
-import { TaskStage } from "@/db/TaskStage";
 import SelectLabelComponent from "./custom/SelectLabelComponent";
 
 import { Separator } from "./ui/separator";
 import { Role } from "@/db/Role";
+import { addTeamMember, update_TeamMember } from "@/utils/GlobalApi";
 
 const AddEditMemberDialog = ({ open, setOpen, type, form = null }) => {
   const [memberForm, setMemberForm] = useState(
     !form
       ? {
           name: "",
-          designation: "",
+          title: "",
           email: "",
           role: "",
         }
       : form
   );
-  const handleSave = () => {};
+  const handleSave = async () => {
+    if (type === "Edit") {
+      //Update Member
+      const success = await update_TeamMember(form.id, memberForm);
+      if (success) {
+        setOpen(false);
+      }
+    } else {
+      // Add new member
+      const success = await addTeamMember(memberForm);
+      if (success) {
+        setOpen(false);
+      }
+    }
+  };
   return (
     <Dialog open={open}>
       <DialogContent>
         <DialogTitle className="text-lg font-semibold">
           {type === "Add" ? "Add Team Member" : "Edit Profile"}
         </DialogTitle>
+        <DialogDescription />
         <Separator className="-my-2" />
         <div className="flex flex-col w-full gap-3">
           <InputComponent
@@ -38,7 +58,7 @@ const AddEditMemberDialog = ({ open, setOpen, type, form = null }) => {
             type={"text"}
           />
           <InputComponent
-            field={"designation"}
+            field={"title"}
             form={memberForm}
             label={"Designation"}
             placeholder={"Enter designation of member..."}

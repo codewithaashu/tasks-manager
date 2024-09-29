@@ -11,14 +11,37 @@ import { Button } from "@/components/ui/button";
 
 import { useState } from "react";
 import AddEditMemberDialog from "./AddEditMemberDialog";
+import { delete_TeamMember } from "@/utils/GlobalApi";
+import { bgColor } from "@/utils/bgColor";
 
 const TeamMemberColumns = [
   {
     accessorKey: "name",
     header: "Name",
+    cell: ({ row }) => {
+      const user = row?.original;
+      return (
+        <div className="w-fit flex flex-row gap-2 items-center">
+          <div
+            className={`w-8 h-8  rounded-full ${
+              bgColor[user?.id % bgColor.length]
+            } flex items-center justify-center text-sm`}
+          >
+            <span className="text-center font-bold">
+              {user?.name?.split(" ").length == 1
+                ? user?.name?.substring(0, 2)
+                : user?.name?.split(" ")[0][0] + user?.name?.split(" ")[1][0]}
+            </span>
+          </div>
+          <div className="flex flex-col gap-0.5">
+            <h1 className="text-sm font-semibold leading-4">{user?.name}</h1>
+          </div>
+        </div>
+      );
+    },
   },
   {
-    accessorKey: "designation",
+    accessorKey: "title",
     header: "Designation",
   },
   {
@@ -35,12 +58,12 @@ const TeamMemberColumns = [
     cell: ({ row }) => (
       <div
         className={`p-0.5 rounded-full text-center ${
-          row?.original?.status === "Active"
+          row?.original?.isActive
             ? "bg-green-100 text-green-600"
             : "bg-slate-100 text-slate-600"
         }`}
       >
-        {row?.original?.status}
+        {row?.original?.isActive ? "Active" : "Inactive"}
       </div>
     ),
   },
@@ -57,7 +80,12 @@ const TableActionBtns = ({ row }) => {
   const user = row?.original;
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [openRemoveAlert, setOpenRemoveAlert] = useState(false);
-  const deleteMember = () => {};
+  const deleteMember = async () => {
+    const success = await delete_TeamMember(user.id);
+    if (success) {
+      setOpenRemoveAlert(false);
+    }
+  };
 
   return (
     <DropdownMenu>

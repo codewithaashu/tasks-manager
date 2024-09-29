@@ -6,19 +6,21 @@ import {
   ThumbsUp,
   User,
 } from "lucide-react";
+import moment from "moment";
 import React from "react";
 
-const ActivityCard = ({ type }) => {
+const ActivityCard = ({ activity }) => {
   return (
     <>
       <div className="flex gap-5">
         <div className="w-10 h-10 flex items-center justify-center">
-          {logoOnActivityType(type)}
+          {logoOnActivityType(activity?.type)}
         </div>
         <div>
-          <h1 className="text-base font-medium">Codewave</h1>
-          <p className="text-sm text-muted-foreground">
-            Assigned on : 28 Sep 2024
+          <h1 className="text-base font-medium">{activity?.by?.name}</h1>
+          <p className="text-sm text-muted-foreground ">
+            {activity?.type?.toLocaleUpperCase()}:{" "}
+            {moment(activity?.date).format("DD MMM YYYY")}
           </p>
           <p className="text-sm font-normal mt-2 w-1/2">
             New task has been assigned to you and 2 others.The task priority is
@@ -52,8 +54,8 @@ const logoOnActivityType = (type) => {
     );
   } else if (type === "commented") {
     return (
-      <div className="w-10 h-10 rounded-full bg-gray-500 flex items-center justify-center text-white">
-        <MessageSquareText />,
+      <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-white">
+        <MessageSquareText className="w-5 h-5" />,
       </div>
     );
   } else if (type === "bug") {

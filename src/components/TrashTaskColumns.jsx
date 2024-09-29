@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { getColorOnStage } from "@/utils/getColorOnStage";
 import { getPriority } from "@/utils/getPriority";
+import { delete_Task, restore_Task } from "@/utils/GlobalApi";
 
 const TrashTaskColumns = [
   {
@@ -55,8 +56,18 @@ const TableActionBtns = ({ row }) => {
   const task = row?.original;
   const [openRestoreAlert, setOpenRestoreAlert] = useState(false);
   const [openRemoveAlert, setOpenRemoveAlert] = useState(false);
-  const restoreTask = () => {};
-  const deleteTask = () => {};
+  const restoreTask = async () => {
+    const success = await restore_Task(task.id);
+    if (success) {
+      setOpenRestoreAlert(false);
+    }
+  };
+  const deleteTask = async () => {
+    const success = await delete_Task(task.id);
+    if (success) {
+      setOpenRemoveAlert(false);
+    }
+  };
 
   return (
     <DropdownMenu>

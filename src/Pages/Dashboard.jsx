@@ -1,15 +1,29 @@
 import DashboardTaskTable from "@/components/DashboardTaskTable";
 import DashboardTeamTable from "@/components/DashboardTeamTable";
 import StatsCard from "@/components/StatsCard";
+import { setLoginUser } from "@/redux/userSlice";
+import { getUser } from "@/utils/GlobalApi";
+import { jwtDecode } from "jwt-decode";
 import {
   CalendarCheck2,
   CalendarClock,
   CalendarCog,
   CalendarDays,
 } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 const Dashboard = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    getUserDetails();
+  }, []);
+  const getUserDetails = async () => {
+    const token = localStorage.getItem("access_token");
+    const email = jwtDecode(token).sub;
+    const user = await getUser(email);
+    dispatch(setLoginUser(user));
+  };
   return (
     <>
       <div className="p-5 md:p-8 flex flex-col gap-5 md:gap-8">

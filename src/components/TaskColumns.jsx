@@ -25,7 +25,8 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { getColorOnStage } from "@/utils/getColorOnStage";
 import { getPriority } from "@/utils/getPriority";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
+import { duplicateTasks, trashedTask } from "@/utils/GlobalApi";
 const TaskColumns = [
   {
     accessorKey: "title",
@@ -62,16 +63,17 @@ const TaskColumns = [
       <div className="flex gap-3 items-center">
         <div className="flex gap-1.5 items-center text-muted-foreground">
           <GitCompareArrows className="w-4 h-4" />
-          <p className="text-sm ">{row?.original?.subTasks}</p>
+          <p className="text-sm ">{row?.original?.subTasks?.length ?? 0}</p>
         </div>
         <div className="flex gap-1.5 items-center text-muted-foreground">
           <Images className="w-4 h-4" />
-          <p className="text-sm ">{row?.original?.assets}</p>
+          <p className="text-sm ">{row?.original?.assets?.length ?? 0}</p>
         </div>
         <div className="flex gap-1.5 items-center text-muted-foreground">
           <ListTodo className="w-4 h-4" />
           <p className="text-sm ">
-            {row?.original?.subTasks}/{row?.original?.activities}
+            {row?.original?.subTasks?.length ?? 0}/
+            {row?.original?.activities?.length ?? 0}
           </p>
         </div>
       </div>
@@ -103,8 +105,18 @@ const TableActionBtns = ({ row }) => {
   const [openAddSubTaskDialog, setOpenAddSubTaskDialog] = useState(false);
   const [openDuplicateAlert, setOpenDuplicateAlert] = useState(false);
   const [openRemoveAlert, setOpenRemoveAlert] = useState(false);
-  const duplicateTask = () => {};
-  const deleteTask = () => {};
+  const duplicateTask = async () => {
+    const success = await duplicateTasks(task?.id);
+    if (success) {
+      setOpenDuplicateAlert(false);
+    }
+  };
+  const deleteTask = async () => {
+    const success = await trashedTask(task?.id);
+    if (success) {
+      setOpenRemoveAlert(false);
+    }
+  };
   const navigate = useNavigate();
   return (
     <DropdownMenu>
@@ -118,7 +130,10 @@ const TableActionBtns = ({ row }) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem className="flex gap-1.5 items-center" onClick={()=>navigate("/task/123")}>
+        <DropdownMenuItem
+          className="flex gap-1.5 items-center"
+          onClick={() => navigate(`/task/${task?.id}`)}
+        >
           <FolderOpen className="w-3 h-3" />
           <p className="text-[13px] font-medium">Open Task</p>
         </DropdownMenuItem>
@@ -160,6 +175,7 @@ const TableActionBtns = ({ row }) => {
       <AddSubTaskDialog
         open={openAddSubTaskDialog}
         setOpen={setOpenAddSubTaskDialog}
+        id={task?.id}
       />
       <AlertDialogComponent
         open={openDuplicateAlert}

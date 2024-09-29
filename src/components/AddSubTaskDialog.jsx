@@ -1,23 +1,36 @@
 import React, { useState } from "react";
-import { Dialog, DialogContent, DialogFooter, DialogTitle } from "./ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogTitle,
+} from "./ui/dialog";
 import { Separator } from "./ui/separator";
 import InputComponent from "./custom/InputComponent";
 import DateLabelComponent from "./custom/DateLabelComponent";
 import { Button } from "./ui/button";
+import { createSubTask } from "@/utils/GlobalApi";
 
-const AddSubTaskDialog = ({ open, setOpen }) => {
+const AddSubTaskDialog = ({ open, setOpen, id }) => {
   const [addSubTaskForm, setAddSubTaskForm] = useState({
     title: "",
     date: "",
     tag: "",
   });
-  const handleSave = () => {};
+  const handleSave = async () => {
+    const success = await createSubTask(id, addSubTaskForm);
+    if (success) {
+      setOpen(false);
+    }
+  };
   return (
     <Dialog open={open}>
       <DialogContent>
         <DialogTitle className="text-lg font-semibold">
           Add Sub-Task
         </DialogTitle>
+        <DialogDescription />
         <Separator className="-my-2" />
         <div className="flex flex-col w-full gap-4">
           <InputComponent

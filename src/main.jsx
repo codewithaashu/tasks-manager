@@ -14,6 +14,8 @@ import Trash from "./Pages/Trash.jsx";
 import Teams from "./Pages/Teams.jsx";
 import TaskDetails from "./Pages/TaskDetails.jsx";
 import { Toaster } from "sonner";
+import { Provider } from "react-redux";
+import { store } from "./redux/store.js";
 
 const router = createBrowserRouter([
   {
@@ -62,8 +64,10 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-      <RouterProvider router={router} />
-      <Toaster richColors position="bottom-right" duration={5000} />
+      <Provider store={store}>
+        <RouterProvider router={router} />
+        <Toaster richColors position="bottom-right" duration={5000} />
+      </Provider>
     </ThemeProvider>
   </StrictMode>
 );

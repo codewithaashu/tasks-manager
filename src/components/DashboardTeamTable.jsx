@@ -1,17 +1,43 @@
-import { TeamMemberList } from "@/db/TeamMemberList";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CustomTable from "./custom/CustomTable";
+import { getTeamMembers } from "@/utils/GlobalApi";
+import Loading from "./custom/Loading";
 
 const DashboardTeamTable = () => {
+  const [loading, setLoading] = useState(false);
+  const [teams, setTeams] = useState(null);
+  useEffect(() => {
+    getTeams();
+  }, []);
+
+  const getTeams = async () => {
+    setLoading(true);
+    const response = await getTeamMembers();
+    setTeams(response);
+    setLoading(false);
+  };
   return (
     <>
-      <div className="col-span-1">
-        <CustomTable
-          data={TeamMemberList.slice(0, 5)}
-          columns={TeamMemberColumns}
-          type={"dashboard"}
-        />
-      </div>
+      {!loading ? (
+        <div className="col-span-1">
+          {teams && (
+            <CustomTable
+              data={teams.slice(0, 5)}
+              columns={TeamMemberColumns}
+              type={"dashboard"}
+            />
+          )}
+          {teams?.length === 0 && (
+            <div className="text-sm text-muted-foreground">
+              No team members in the project
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="py-5">
+          <Loading />
+        </div>
+      )}
     </>
   );
 };
@@ -45,12 +71,12 @@ const TeamMemberColumns = [
     cell: ({ row }) => (
       <div
         className={`p-0.5 rounded-full text-center ${
-          row?.original?.status === "Active"
+          row?.original?.isActive
             ? "bg-green-100 text-green-600"
             : "bg-slate-100 text-slate-600"
         }`}
       >
-        {row?.original?.status}
+        {row?.original?.isActive ? "Active" : "Inactive"}
       </div>
     ),
   },
